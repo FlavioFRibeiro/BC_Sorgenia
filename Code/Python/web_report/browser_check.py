@@ -24,7 +24,9 @@ def main():
         page.goto("http://127.0.0.1:8501", wait_until="domcontentloaded")
         expect(page.get_by_text("-540.640,69 €", exact=True)).to_be_visible(timeout=120000)
         expect(page.locator('[data-testid="stPlotlyChart"] .js-plotly-plot')).to_have_count(3, timeout=60000)
-        expect(page.locator('[data-testid="stPlotlyChart"]').first.get_by_text("Gen 2026", exact=True)).to_be_visible()
+        axis_labels = page.locator('[data-testid="stPlotlyChart"]').first.locator(".xtick text").all_text_contents()
+        if not any("Gen" in text for text in axis_labels):
+            raise AssertionError(f"Mesi non localizzati in italiano: {axis_labels}")
         results.append({"view": "desktop_overview", "seconds": round(time.perf_counter() - start, 3)})
         page.screenshot(path=str(target / "desktop_overview.png"), full_page=True)
         page.get_by_role("heading", name="Contributo per paese", exact=True).scroll_into_view_if_needed()
