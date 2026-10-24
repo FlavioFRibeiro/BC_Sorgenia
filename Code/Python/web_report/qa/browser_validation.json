@@ -3,7 +3,7 @@
   "checks": [
     {
       "view": "desktop_overview",
-      "seconds": 2.261
+      "seconds": 2.64
     },
     {
       "view": "desktop_conto_economico",

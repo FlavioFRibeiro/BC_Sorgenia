@@ -63,7 +63,8 @@ def selected_files():
     files = [path for path in files if path.name != "secrets.toml"]
     files += [WEB_DIR / "data" / name for name in ("manifest.json", "deals.csv.gz", "monthly_reference.csv", "reference.json")]
     if (WEB_DIR / "qa").is_dir():
-        files += [path for path in (WEB_DIR / "qa").iterdir() if path.suffix in (".json", ".txt", ".png", ".md")]
+        files += [path for path in (WEB_DIR / "qa").iterdir() if path.suffix in (".json", ".txt", ".png", ".md")
+                  and path.name != "repository_publication.json"]
     return sorted(set(files))
 
 

@@ -11,6 +11,6 @@ test_03_empty_and_reset (test_web_report.InterfaceTests.test_03_empty_and_reset)
 test_04_detail_pagination_and_hour25 (test_web_report.InterfaceTests.test_04_detail_pagination_and_hour25) ... ok
 
 ----------------------------------------------------------------------
-Ran 11 tests in 35.746s
+Ran 11 tests in 34.011s
 
 OK

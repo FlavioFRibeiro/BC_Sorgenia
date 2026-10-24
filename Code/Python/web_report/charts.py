@@ -1,7 +1,7 @@
 """Grafici di presentazione: nessun calcolo finanziario nel frontend."""
 import plotly.graph_objects as go
 
-from data_model import COUNTRIES, fmt
+from data_model import COUNTRIES, MONTH_NAMES, fmt
 
 GREEN, RED, INK, MUTED = "#168365", "#BD5A56", "#173C37", "#6C817B"
 
@@ -26,12 +26,13 @@ def monthly_chart(monthly):
     labels, values = [], []
     for key in keys:
         contributions = [row["pnl_energy"] for row in groups[key] if row["n_energy"] > 0]
-        labels.append(f"{int(key[0])}-{int(key[1]):02d}" if key[0] is not None else "Data non valida")
+        labels.append(f"{MONTH_NAMES[int(key[1]) - 1][:3]} {int(key[0])}" if key[0] is not None else "Data non valida")
         values.append(finance.strict_sum(contributions))
     fig = go.Figure(go.Bar(x=labels, y=values, marker_color=[GREEN if x is not None and x >= 0 else RED for x in values],
                           customdata=[fmt(x) if x is not None else "Dati incompleti" for x in values],
                           hovertemplate="%{x}<br>P&L: %{customdata} EUR<extra></extra>"))
     fig.update_yaxes(title="EUR")
+    fig.update_xaxes(type="category")
     return style(fig)
 
 

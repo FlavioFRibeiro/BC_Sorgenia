@@ -4,7 +4,7 @@ import json
 import os
 import time
 
-from data_model import WEB_DIR
+from data_model import WEB_DIR, sha256
 
 os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", str(WEB_DIR / ".cache" / "browsers"))
 
@@ -24,6 +24,7 @@ def main():
         page.goto("http://127.0.0.1:8501", wait_until="domcontentloaded")
         expect(page.get_by_text("-540.640,69 €", exact=True)).to_be_visible(timeout=120000)
         expect(page.locator('[data-testid="stPlotlyChart"] .js-plotly-plot')).to_have_count(3, timeout=60000)
+        expect(page.locator('[data-testid="stPlotlyChart"]').first.get_by_text("Gen 2026", exact=True)).to_be_visible()
         results.append({"view": "desktop_overview", "seconds": round(time.perf_counter() - start, 3)})
         page.screenshot(path=str(target / "desktop_overview.png"), full_page=True)
         page.get_by_role("heading", name="Contributo per paese", exact=True).scroll_into_view_if_needed()
@@ -56,7 +57,8 @@ def main():
             raise AssertionError("Errori JavaScript: " + str(errors))
         browser.close()
     (target / "browser_validation.json").write_text(json.dumps({"passed": True, "checks": results,
-          "javascript_errors": errors, "cloud_access_tested": False}, indent=2) + "\n", encoding="utf-8")
+          "javascript_errors": errors, "cloud_access_tested": False,
+          "source_sha256": {name: sha256(WEB_DIR / name) for name in ("app.py", "charts.py", "data_model.py")}}, indent=2) + "\n", encoding="utf-8")
     print("QA browser desktop/mobile: OK")
 
 
