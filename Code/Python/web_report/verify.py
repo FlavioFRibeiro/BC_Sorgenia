@@ -13,7 +13,7 @@ from data_model import CORE_PATH, WEB_DIR, sha256
 
 if __name__ == "__main__":
     start = time.perf_counter()
-    suite = unittest.defaultTestLoader.discover(str(WEB_DIR), pattern="test_web_report.py")
+    suite = unittest.defaultTestLoader.discover(str(WEB_DIR), pattern="test_*.py")
     log = io.StringIO()
     result = unittest.TextTestRunner(stream=log, verbosity=2).run(suite)
     target = WEB_DIR / "qa"

@@ -5,7 +5,7 @@
 - Ambiente isolato Python 3.12.13, dipendenze dirette e transitive fissate.
 - Snapshot deterministico: 216.804 righe, 117 gruppi mensili, confronto degli importi con report R/Python e riconciliazione indipendente.
 - P&L ENERGY **−540.640,69 EUR**; margine di contribuzione del dataset **−14.214.839,86 EUR**.
-- Undici test automatici superati, inclusi tutti i filtri, solo servizi, selezione vuota, ora 25, prezzi negativi, P&L incompleto, download completo, corruzione snapshot e preparazione ripetibile.
+- Dodici test automatici superati, inclusi tutti i filtri, solo servizi, selezione vuota, ora 25, prezzi negativi, P&L incompleto, download completo, corruzione snapshot, preparazione ripetibile e preservazione dei byte nel checkout Git Windows/Linux.
 - Test UI: navigazione, persistenza e reset dei filtri, paginazione, ora 25, invalidazione del download e reset dei filtri locali non più validi.
 - Browser Chromium isolato: Panoramica, Conto Economico e dettaglio su desktop; Panoramica e grafici su mobile 390 px. Nessun errore JavaScript e nessun overflow orizzontale rilevato. Schermate controllate nella cartella QA.
 - Server locale su loopback, endpoint health HTTP 200.

@@ -28,6 +28,8 @@ Dopo la prima configurazione basta eseguire `python Code/Python/web_report/run_l
 
 Lo snapshot in `data/` contiene dettaglio CSV gzip, riferimento mensile, indicatori di controllo e manifesto con SHA-256, schema e contatori. La compressione ha timestamp e filename gzip fissi: due preparazioni con gli stessi input generano file identici. Il manifesto viene sostituito per ultimo; un aggiornamento incompleto viene rifiutato.
 
+La pubblicazione scrive `.gitattributes` alla radice del repository con `-text` per il payload dello snapshot e il modulo finanziario: Git conserva gli stessi byte su Windows e Linux. Prima del push vengono confrontati gli hash dei blob nell'index Git e dopo il commit quelli di HEAD. Il test `test_git_transport.py` riproduce la conversione CRLF/LF e verifica che un checkout con configurazione Linux conservi il payload originale.
+
 All'avvio si verificano schema, hash, versione del modulo finanziario e indicatori. I dati sono mantenuti in cache per identità e firma dei file; cambiare snapshot invalida il cache. Gli utenti non modificano i dati e non caricano file.
 
 Le funzioni `contractual_statement()`, `monthly_summary()` e le somme rigorose provengono da `Code/Python/functions.py`. L'interfaccia non ricalcola formule finanziarie in JavaScript. Le operazioni sui numeri mantengono precisione double; euro e prezzi sono arrotondati solo nella presentazione. I valori completi mancanti restano non disponibili, anziché diventare zero.
@@ -47,7 +49,7 @@ Le funzioni `contractual_statement()`, `monthly_summary()` e le somme rigorose p
 Dalla radice:
 
 ```powershell
-Code/Python/web_report/.venv/Scripts/python.exe -m unittest discover -s Code/Python/web_report -p test_web_report.py -v
+Code/Python/web_report/.venv/Scripts/python.exe -m unittest discover -s Code/Python/web_report -p "test_*.py" -v
 ```
 
 I test verificano baseline ai centesimi, 216.804 righe e 117 gruppi come riferimenti, singoli filtri e combinazioni, solo servizi, assenze, ora 25, prezzi negativi, P&L incompleto, download oltre la prima pagina, rifiuto di snapshot alterati, preparazione riproducibile e navigazione Streamlit tramite AppTest.
@@ -60,11 +62,12 @@ Per registrare l'esito strutturato: `Code/Python/web_report/.venv/Scripts/python
 
 Repository autorizzato: **[FlavioFRibeiro/BC_Sorgenia](https://github.com/FlavioFRibeiro/BC_Sorgenia)**. Viewer iniziale: **flarib@msn.com**.
 
-`publish.py` verifica con l'API GitHub autenticata che il repository sia privato e pubblica il codebase senza force-push. Usa il gestore credenziali Git esistente; nessun token o password viene scritto nel progetto. Include sorgenti, input del case, report e snapshot compresso; esclude ambienti, cache, segreti e i due dettagli CSV di grandi dimensioni rigenerabili.
+`publish.py` verifica il repository con l'API GitHub autenticata e pubblica il codebase senza force-push. Per impostazione predefinita richiede un repository privato; il proprietario ha successivamente autorizzato il mantenimento pubblico di BC_Sorgenia, consentito esplicitamente con `--allow-public`. Usa il gestore credenziali Git esistente; nessun token o password viene scritto nel progetto. Include sorgenti, input del case, report e snapshot compresso; esclude ambienti, cache, segreti e i due dettagli CSV di grandi dimensioni rigenerabili.
 
 ```powershell
 python Code/Python/web_report/publish.py          # verifica visibilità privata
 python Code/Python/web_report/publish.py --push   # pubblica il codebase
+python Code/Python/web_report/publish.py --push --allow-public  # scelta pubblica autorizzata dal proprietario
 ```
 
 Per il deploy dalla propria sessione Streamlit Cloud:

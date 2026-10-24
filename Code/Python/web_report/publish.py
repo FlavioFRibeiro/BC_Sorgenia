@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Pubblica il codebase nel repository privato autorizzato, senza salvare credenziali."""
+"""Pubblica il codebase nel repository autorizzato, senza salvare credenziali."""
 import argparse
 import json
 import os
@@ -11,6 +11,7 @@ import urllib.request
 from pathlib import Path
 
 from data_model import WEB_DIR, finance, load_snapshot, sha256
+from git_transport import git_blob, verify_git_payload, write_attributes
 
 REPOSITORY = "FlavioFRibeiro/BC_Sorgenia"
 REMOTE = f"https://github.com/{REPOSITORY}.git"
@@ -27,7 +28,14 @@ def run_git(arguments, cwd=None, capture=False):
     return process.stdout.strip() if capture else None
 
 
-def repository_metadata():
+def validate_repository(metadata, allow_public=False):
+    finance.require(metadata["full_name"].lower() == REPOSITORY.lower(), "Repository inatteso")
+    finance.require(metadata["private"] is True or allow_public,
+                    "Pubblicazione bloccata: repository pubblico; serve l'autorizzazione esplicita --allow-public")
+    return metadata
+
+
+def repository_metadata(allow_public=False):
     # Flusso standard Git Credential Manager: token solo in memoria, mai stampato/salvato.
     env = dict(os.environ, GIT_TERMINAL_PROMPT="0", GCM_INTERACTIVE="never")
     result = subprocess.run(["git", "-c", "credential.interactive=never", "credential", "fill"],
@@ -41,9 +49,7 @@ def repository_metadata():
                                              "Accept": "application/vnd.github+json", "User-Agent": "Sorgenia-Business-Case"})
     with urllib.request.urlopen(request, timeout=30) as response:
         metadata = json.load(response)
-    finance.require(metadata["full_name"].lower() == REPOSITORY.lower(), "Repository inatteso")
-    finance.require(metadata["private"] is True, "Pubblicazione bloccata: il repository deve essere privato")
-    return metadata
+    return validate_repository(metadata, allow_public)
 
 
 def selected_files():
@@ -68,9 +74,10 @@ def selected_files():
     return sorted(set(files))
 
 
-def publish(push=False):
-    metadata = repository_metadata()
-    print(f"Repository verificato: {metadata['full_name']}; visibilita privata")
+def publish(push=False, allow_public=False):
+    metadata = repository_metadata(allow_public)
+    visibility = "privata" if metadata["private"] else "pubblica (autorizzata)"
+    print(f"Repository verificato: {metadata['full_name']}; visibilita {visibility}")
     if not push:
         return metadata
     load_snapshot(WEB_DIR / "data")
@@ -86,6 +93,12 @@ def publish(push=False):
             run_git(["checkout", "-b", branch], cwd=checkout)
         else:
             run_git(["checkout", branch], cwd=checkout)
+        reference_path = "Code/Python/web_report/data/monthly_reference.csv"
+        if head.returncode == 0:
+            old_reference = git_blob(checkout, reference_path, "HEAD")
+            original_reference = (WEB_DIR / "data" / "monthly_reference.csv").read_bytes()
+            if old_reference != original_reference and old_reference == original_reference.replace(b"\r\n", b"\n"):
+                print("Diagnosi confermata: Git aveva convertito monthly_reference.csv da CRLF a LF.", flush=True)
         for path in selected_files():
             relative = path.relative_to(ROOT)
             target = checkout / relative
@@ -96,24 +109,33 @@ def publish(push=False):
         shutil.copyfile(WEB_DIR / ".streamlit" / "config.toml", checkout / ".streamlit" / "config.toml")
         (checkout / ".python-version").write_text("3.12\n", encoding="ascii")
         (checkout / ".gitignore").write_text("**/__pycache__/\n**/.venv/\n**/.runtime/\n**/.cache/\n**/.publish/\n**/secrets.toml\nOutput/**/deals_enriched_pnl.csv\n", encoding="ascii")
-        run_git(["add", "--", "README.md", "DEAL.csv", "CurveOrariePower.csv", "Code", "Output", ".streamlit", ".python-version", ".gitignore"], cwd=checkout)
+        write_attributes(checkout)
+        run_git(["add", "--", "README.md", "DEAL.csv", "CurveOrariePower.csv", "Code", "Output", ".streamlit", ".python-version", ".gitignore", ".gitattributes"], cwd=checkout)
+        run_git(["add", "--renormalize", "--", "Code/Python/functions.py", "Code/Python/web_report/data"], cwd=checkout)
+        expected_payload = {"Code/Python/functions.py": sha256(ROOT / "Code" / "Python" / "functions.py"),
+                            **{f"Code/Python/web_report/data/{name}": sha256(WEB_DIR / "data" / name)
+                               for name in ("manifest.json", "deals.csv.gz", "monthly_reference.csv", "reference.json")}}
+        verify_git_payload(checkout, expected_payload)
         changed = run_git(["diff", "--cached", "--name-only"], cwd=checkout, capture=True)
         if changed:
             run_git(["-c", "user.name=Flavio F Ribeiro", "-c", "user.email=flarib@msn.com", "-c", "commit.gpgsign=false",
-                     "commit", "-m", "Add validated R/Python business case and private Streamlit report"], cwd=checkout)
+                     "commit", "-m", "Preserve snapshot bytes across Windows and Linux deployments"], cwd=checkout)
             run_git(["push", "origin", branch], cwd=checkout)
+        verify_git_payload(checkout, expected_payload, "HEAD")
         commit = run_git(["rev-parse", "HEAD"], cwd=checkout, capture=True)
-    result = {"repository": metadata["html_url"], "private": True, "branch": branch, "commit": commit,
+    result = {"repository": metadata["html_url"], "private": metadata["private"], "branch": branch, "commit": commit,
               "entrypoint": "Code/Python/web_report/app.py", "python": "3.12", "viewer_email": "flarib@msn.com",
-              "streamlit_deployed": False, "access_policy_verified": False}
+              "streamlit_url": "https://bc-sorgenia.streamlit.app/",
+              "streamlit_deployment_verified": False, "access_policy_verified": False}
     (WEB_DIR / "qa").mkdir(exist_ok=True)
     (WEB_DIR / "qa" / "repository_publication.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-    print(f"Codebase pubblicato nel repository privato. Commit: {commit}")
+    print(f"Codebase pubblicato. Commit: {commit}")
     return result
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--push", action="store_true", help="Pubblica il codebase verificato nel repository privato")
+    parser.add_argument("--push", action="store_true", help="Pubblica il codebase verificato")
+    parser.add_argument("--allow-public", action="store_true", help="Consente il repository pubblico su autorizzazione esplicita del proprietario")
     args = parser.parse_args()
-    publish(args.push)
+    publish(args.push, args.allow_public)
