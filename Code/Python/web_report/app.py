@@ -7,6 +7,7 @@ import pandas as pd
 import streamlit as st
 
 from charts import contribution_chart, monthly_chart, waterfall
+from formatting import money
 from data_model import (COUNTRIES, DETAIL_COLUMNS, DIMENSIONS, MONTH_COLUMNS, MONTH_NAMES,
                         WEB_DIR, csv_bytes, filter_indices, fmt, load_snapshot,
                         snapshot_signature, summary)
@@ -118,11 +119,11 @@ if not indices:
 stats = results["statistics"]
 if stats["n_energy_incomplete"]:
     st.warning(f"Dati ENERGY incompleti: {stats['n_energy_incomplete']} righe senza P&L calcolabile. I totali completi restano non disponibili.")
-def metric_value(name, suffix=" €"):
+def metric_value(name):
     value = stats[name]
     if value is None:
         return "Non applicabile" if stats["n_energy"] == 0 and name in ("pnl", "volume_energy") else "Dati incompleti"
-    return fmt(value, 0 if name == "volume_energy" else 2) + suffix
+    return fmt(value, 0) + " MWh" if name == "volume_energy" else money(value)
 
 if page == "Panoramica":
     pnl_text = escape(metric_value("pnl"))
@@ -133,7 +134,7 @@ if page == "Panoramica":
         col.metric(title, metric_value(key))
     cols = st.columns(3)
     cols[0].metric("Costi di acquisto energia", metric_value("cost_energy"))
-    cols[1].metric("Volume ENERGY", metric_value("volume_energy", " MWh"))
+    cols[1].metric("Volume ENERGY", metric_value("volume_energy"))
     cols[2].metric("Righe ENERGY con P&L calcolabile", fmt(stats["n_calculable"], 0))
     if stats["n_energy"]:
         st.subheader("Andamento mensile del P&L")
@@ -157,7 +158,7 @@ elif page == "Conto Economico":
         table = [("Ricavi da vendita di energia", stats["revenue_energy"]), ("Ricavi da servizi", stats["revenue_service"]),
                  ("Totale ricavi", total_revenue), ("Costi di acquisto di energia", stats["cost_energy"]),
                  ("Margine di contribuzione", stats["known_margin"])]
-        st.dataframe(pd.DataFrame({"Voce": [k for k, _ in table], "EUR": [fmt(v) if v is not None else "Dati incompleti" for _, v in table]}),
+        st.dataframe(pd.DataFrame({"Voce": [k for k, _ in table], "Importo": [money(v) if v is not None else "Dati incompleti" for _, v in table]}),
                      hide_index=True, width="stretch")
     with right:
         if stats["known_margin"] is not None:
@@ -174,8 +175,9 @@ else:
         col.metric(title, fmt(stats[name], 0))
     st.subheader("Risultati mensili")
     monthly_frame = pd.DataFrame(results["monthly"])
-    st.dataframe(monthly_frame, hide_index=True, width="stretch",
-                 column_config={name: st.column_config.NumberColumn(format="%.2f") for name in ("importo_total", "pnl_energy", "market_value_signed_energy", "importo_service_power")})
+    for name in ("importo_total", "pnl_energy", "market_value_signed_energy", "importo_service_power", "pnl_energy_calculable_subtotal"):
+        monthly_frame[name] = [money(row[name]) if row[name] is not None else "Non applicabile / incompleto" for row in results["monthly"]]
+    st.dataframe(monthly_frame, hide_index=True, width="stretch")
     st.download_button("Scarica il mensile filtrato", csv_bytes(results["monthly"], MONTH_COLUMNS),
                        "monthly_summary_filtered.csv", "text/csv", key="monthly_download")
     st.subheader("Profili orari")
@@ -210,11 +212,15 @@ else:
     page_number = st.number_input("Pagina", min_value=1, max_value=pages, value=1, step=1, key="detail_page")
     start = (int(page_number) - 1) * 100
     frame = pd.DataFrame([{k: r[k] for k in columns} for r in detail_rows[start:start + 100]], columns=columns)
+    for name in ("IMPORTO", "importo_value", "market_value_signed", "pnl"):
+        if name in columns:
+            field = "importo_value" if name == "IMPORTO" else name
+            frame[name] = [money(row[field]) if row[field] is not None else "Non applicabile / incompleto" for row in detail_rows[start:start + 100]]
     if frame.empty:
         st.info("Nessun profilo orario per data e ora selezionate.")
     else:
         st.dataframe(frame, hide_index=True, width="stretch",
-                     column_config={k: st.column_config.NumberColumn(format="%.2f") for k in ("contract_price", "market_price", "pnl", "volume_value") if k in columns})
+                     column_config={k: st.column_config.NumberColumn(label=f"{k} (€/MWh)" if k in ("contract_price", "market_price") else k, format="%.2f") for k in ("contract_price", "market_price", "volume_value") if k in columns})
     st.caption(f"Pagina {page_number} di {pages} · {fmt(len(detail_rows), 0)} righe. deal_row_id e un identificativo tecnico di riga, non di contratto.")
     if st.button("Prepara CSV di tutte le righe selezionate", key="prepare_download"):
         st.session_state["detail_export"] = (selections, chosen_date, chosen_hour, order_by, descending, csv_bytes(detail_rows, DETAIL_COLUMNS))
@@ -226,4 +232,5 @@ else:
         st.write("Snapshot verificato tramite SHA-256 e riconciliato con i risultati R e Python. Le ore 25 sono conservate. I costi e ricavi sono classificati per purpose e commodity.")
         st.code(snapshot.manifest["dataset_id"], language=None)
 
+st.caption("Importi in k€ (migliaia) o M€ (milioni), con una cifra decimale. Prezzi in €/MWh. I CSV conservano gli importi originali e la precisione completa.")
 st.markdown(f'<div class="footer">Sorgenia Trading · Business case · Snapshot {snapshot.manifest["dataset_id"][:12]} · EUR / MWh come ipotesi del dataset</div>', unsafe_allow_html=True)

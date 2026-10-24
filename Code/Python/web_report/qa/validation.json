@@ -1,23 +1,24 @@
 {
   "passed": true,
-  "tests": 12,
+  "tests": 13,
   "errors": 0,
   "failures": 0,
-  "seconds": 43.139,
+  "seconds": 45.457,
   "python": "3.12.13",
   "snapshot_sha256": "fb6a3b2752a9b7f99d7b9c8079973c1b4063a49aaf8f304ab185c9a661bed749",
   "core_sha256": "149ca40973c06484e9d15fb56a7a9eecc1ca233ea78913552ad5df75f1b625d3",
   "source_sha256": {
-    "app.py": "452d0527cc8e52a6f902f9c613323c8f691a6bf33e93a9e7dbde623a82dbc8bc",
-    "browser_check.py": "841d1f0b3ee3cc047ab6577ba869674ea18cc9251b2896c966e7d7f637d677bf",
-    "charts.py": "5d84d29b5cf924705dd20b8b7260ff33b5ee45c30a65d4da78370fcef76eab61",
+    "app.py": "e403d768ef45a1a8614c1feaa78617005110b0309c460a59f00b733435bfe645",
+    "browser_check.py": "a09667520c894e98fcf01fc5a6481835aaa9cf6d46a653f962fe117f381e74b4",
+    "charts.py": "e80b6c177a9c261be627165e37760b8f9c5c13cea520c974cb7ae66a073c3020",
     "data_model.py": "0cf0a479f8eaa3b5de111709bd53c2949406e4cac1eb984bb4da9026811273d3",
+    "formatting.py": "211d9fe618b2500362cb6a071878c89ffb12875b6597da6ac9f0d59705c25275",
     "git_transport.py": "838ac658a8059f53df006c78a671c7e2ad59f8c44b5cd326426758ae1430dff0",
     "prepare_data.py": "2dc9f5ae923d2ff0f3a1e16dc749871cc7a4485d908eddaacbfb4f7dc7f303a9",
-    "publish.py": "dc8d31576ef0b6ec25159f08c2bb62361ea1aded3507642c0b445d1ca9f0b201",
+    "publish.py": "710e1a530f95a9509d312187428370ea97424779982a8d4777470181e6d019ae",
     "run_local.py": "5ae996aae6f6a2589bcd4a626355367bb9fe2387816a51f216bb1603d73dc497",
-    "test_git_transport.py": "e1c4671cb20d90263b91da9369e693e98d698fb0622ff6bcc5bfd7e4d7f05c8b",
-    "test_web_report.py": "c0bcaf81e09b71364523ce6fd4a0412f606b31c8f69cc5dab9b5b39639942665",
+    "test_git_transport.py": "21309f5a7d331f0114117152a8a1385bc73c0f49659340f787b8e78ba37faa3d",
+    "test_web_report.py": "0829b6815053a58c9acc53334e03de0dd72b4c30c6b6e88c4c8fca7f5f82ce95",
     "verify.py": "b7366fd68ea11cd45e55ad1f0c8823cdbcb954d6482c0462a29548c3e4aac177"
   }
 }

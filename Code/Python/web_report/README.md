@@ -24,6 +24,8 @@ Dopo la prima configurazione basta eseguire `python Code/Python/web_report/run_l
 
 ## Dati e precisione
 
+Gli importi dell'interfaccia sono abbreviati con una cifra decimale: `k€` per migliaia e `M€` da un milione (in valore assoluto). Per esempio, `-540.640,69 €` diventa `-540,6 k€` e `-14.214.839,86 €` diventa `-14,2 M€`. Il segno viene preservato. Ogni asse monetario usa una scala comune, indicata nelle etichette; tooltip e tabelle mostrano l'unità accanto all'importo. I prezzi unitari restano in `€/MWh`, i volumi in MWh e i contatori in righe. Calcoli, snapshot e CSV scaricabili conservano valori e precisione originali.
+
 `prepare_data.py` legge gli output di `Output/python`, controlla gli hash nel verbale di validazione, riconcilia ogni gruppo mensile tramite il modulo finanziario esistente e confronta **tutti gli importi pubblicati** con i report R e Python. I CSV sorgenti restano intatti.
 
 Lo snapshot in `data/` contiene dettaglio CSV gzip, riferimento mensile, indicatori di controllo e manifesto con SHA-256, schema e contatori. La compressione ha timestamp e filename gzip fissi: due preparazioni con gli stessi input generano file identici. Il manifesto viene sostituito per ultimo; un aggiornamento incompleto viene rifiutato.

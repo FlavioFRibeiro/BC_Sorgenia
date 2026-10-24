@@ -133,8 +133,8 @@ class InterfaceTests(unittest.TestCase):
 
     def test_01_overview(self):
         self.check_no_exception()
-        self.assertTrue(any("-540.640,69" in x.value for x in self.app.markdown))
-        self.assertTrue(any(x.value == "-14.214.839,86 €" for x in self.app.metric))
+        self.assertTrue(any("-540,6 k€" in x.value for x in self.app.markdown))
+        self.assertTrue(any(x.value == "-14,2 M€" for x in self.app.metric))
 
     def test_02_services_filters_and_navigation(self):
         self.app.multiselect(key="filter_commodity").set_value(["SERVICE_POWER"]).run()
@@ -143,7 +143,7 @@ class InterfaceTests(unittest.TestCase):
         self.app.radio(key="navigation").set_value("Conto Economico").run()
         self.check_no_exception()
         self.assertEqual(self.app.multiselect(key="filter_commodity").value, ["SERVICE_POWER"])
-        self.assertTrue(any(x.value == "903.553,50 €" for x in self.app.metric))
+        self.assertTrue(any(x.value == "903,6 k€" for x in self.app.metric))
 
     def test_03_empty_and_reset(self):
         self.app.multiselect(key="filter_market").set_value([]).run()

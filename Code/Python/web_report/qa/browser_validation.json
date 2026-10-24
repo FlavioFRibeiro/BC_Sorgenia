@@ -3,7 +3,7 @@
   "checks": [
     {
       "view": "desktop_overview",
-      "seconds": 8.955
+      "seconds": 2.745
     },
     {
       "view": "desktop_conto_economico",
@@ -22,8 +22,8 @@
   "javascript_errors": [],
   "cloud_access_tested": false,
   "source_sha256": {
-    "app.py": "452d0527cc8e52a6f902f9c613323c8f691a6bf33e93a9e7dbde623a82dbc8bc",
-    "charts.py": "5d84d29b5cf924705dd20b8b7260ff33b5ee45c30a65d4da78370fcef76eab61",
+    "app.py": "e403d768ef45a1a8614c1feaa78617005110b0309c460a59f00b733435bfe645",
+    "charts.py": "e80b6c177a9c261be627165e37760b8f9c5c13cea520c974cb7ae66a073c3020",
     "data_model.py": "0cf0a479f8eaa3b5de111709bd53c2949406e4cac1eb984bb4da9026811273d3"
   }
 }
