@@ -1,0 +1,7 @@
+**/__pycache__/
+**/.venv/
+**/.runtime/
+**/.cache/
+**/.publish/
+**/secrets.toml
+Output/**/deals_enriched_pnl.csv

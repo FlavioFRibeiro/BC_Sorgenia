@@ -1,0 +1,96 @@
+{
+  "core_sha256": "149ca40973c06484e9d15fb56a7a9eecc1ca233ea78913552ad5df75f1b625d3",
+  "counts": {
+    "monthly_groups": 117,
+    "rows": 216804
+  },
+  "dataset_id": "e2a74c4c570e26fe9169743005417495db34c2f9ec7b85473bed174f398b0bf8",
+  "detail_schema": [
+    "business_unit",
+    "DATA",
+    "ORA",
+    "proposer_description",
+    "counterparty",
+    "purpose",
+    "market",
+    "commodity",
+    "IMPORTO",
+    "VOLUME",
+    "deal_row_id",
+    "delivery_date",
+    "delivery_hour",
+    "importo_value",
+    "volume_value",
+    "direction",
+    "curve_index_expected",
+    "curve_match_count",
+    "curve_row_id",
+    "DDATE",
+    "HOUR",
+    "curve_index",
+    "market_price_raw",
+    "market_price",
+    "match_status",
+    "pnl_applicable",
+    "row_problem",
+    "issue_codes",
+    "contract_price",
+    "pnl_calculable",
+    "pnl",
+    "market_value_signed",
+    "pnl_status"
+  ],
+  "files": {
+    "deals.csv.gz": {
+      "bytes": 6893156,
+      "sha256": "258a726ae02b01e309cd7b75c34950fb38a6beed717a600c9e6e8a0bd2f7b7f6"
+    },
+    "monthly_reference.csv": {
+      "bytes": 20241,
+      "sha256": "86d7b5fb57d6c97243e16eeaa833202476a75fffd714706c5a5c490f1db97702"
+    },
+    "reference.json": {
+      "bytes": 902,
+      "sha256": "7e46399b983f1149a5ec1320f8a9190d7e4a35b516b2fecb6d532795f3340555"
+    }
+  },
+  "monthly_schema": [
+    "anno",
+    "mese",
+    "counterparty",
+    "purpose",
+    "market",
+    "n_rows",
+    "importo_total",
+    "n_energy",
+    "volume_energy",
+    "market_value_signed_energy",
+    "pnl_energy",
+    "n_service_power",
+    "importo_service_power",
+    "n_pnl_calculable",
+    "n_problem_rows",
+    "n_energy_not_calculable",
+    "n_pnl_not_applicable",
+    "n_curve_unavailable",
+    "pnl_energy_calculable_subtotal"
+  ],
+  "period": {
+    "from": "2026-01-01",
+    "to": "2026-12-31"
+  },
+  "r_report_sha256": "345d89be0a27ee9a08b97f1740c0bd3f1ee53a1cb391edf2e213f02c9404e629",
+  "schema_version": 1,
+  "sources": {
+    "deals_enriched_pnl.csv": "1bd55c135492cf3bf1f70c6c6edf373217083f7ee8b5c244ba821ac06fb28501",
+    "monthly_summary.csv": "86d7b5fb57d6c97243e16eeaa833202476a75fffd714706c5a5c490f1db97702",
+    "report_it.md": "adc9b5e5626a04e754ba2631b118a8207c56619623d2239c76357c0bcc202591",
+    "validation.txt": "5635d38ecb3cfa35a6196a4e8110f5c73fabc4645f6d3cb61a285270f478c716"
+  },
+  "units": {
+    "assumed": true,
+    "currency": "EUR",
+    "energy_price": "EUR/MWh",
+    "energy_volume": "MWh"
+  }
+}

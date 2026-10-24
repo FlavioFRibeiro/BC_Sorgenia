@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "tests": 11,
+  "errors": 0,
+  "failures": 0,
+  "seconds": 35.763,
+  "python": "3.12.13",
+  "snapshot_sha256": "fb6a3b2752a9b7f99d7b9c8079973c1b4063a49aaf8f304ab185c9a661bed749",
+  "core_sha256": "149ca40973c06484e9d15fb56a7a9eecc1ca233ea78913552ad5df75f1b625d3",
+  "source_sha256": {
+    "app.py": "b1b6ea322be5f3038982c5311cd950d4e883dfd225cf5d988df0108eaddcbd8d",
+    "charts.py": "0c4dd55316f32d5d1e97609193890cafd71c101f19c0ba39d496ce425327c178",
+    "data_model.py": "0cf0a479f8eaa3b5de111709bd53c2949406e4cac1eb984bb4da9026811273d3",
+    "prepare_data.py": "ac3c08733dd56bcb890c1bb8a38431f17993b9b643c2ddcb6d8c8c1193f4f031",
+    "publish.py": "b30fdc0177460f9836ea12adf580a19f709363c6177c51d2a6345674ac1fdab5",
+    "test_web_report.py": "87b9933fb5b9836a40b28196899f1af390c4a581281e31a3f38f974cc6be5ed4",
+    "verify.py": "6f508d77b132cc114f82b722ace6b14d99feaee2f022a5721c9ee66875b6f2f2"
+  }
+}

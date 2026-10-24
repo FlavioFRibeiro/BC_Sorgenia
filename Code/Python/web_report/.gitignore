@@ -1,0 +1,9 @@
+.venv/
+.runtime/
+.cache/
+.publish/
+__pycache__/
+*.pyc
+.streamlit/secrets.toml
+.pytest_cache/
+qa/*.log

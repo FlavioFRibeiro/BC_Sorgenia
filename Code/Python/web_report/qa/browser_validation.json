@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "view": "desktop_overview",
+      "seconds": 2.261
+    },
+    {
+      "view": "desktop_conto_economico",
+      "passed": true
+    },
+    {
+      "view": "desktop_detail",
+      "passed": true
+    },
+    {
+      "view": "mobile_overview",
+      "width": 390,
+      "horizontal_overflow": false
+    }
+  ],
+  "javascript_errors": [],
+  "cloud_access_tested": false
+}

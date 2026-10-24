@@ -1,0 +1,37 @@
+VALIDAZIONE PYTHON COMPLETATA
+Test sintetici mirati: OK
+Chiavi curve univoche: OK
+Left join conservativo (righe, originali, IMPORTO, VOLUME): OK
+Identita formule P&L: OK
+Riconciliazione indipendente con Decimal: OK
+Rilettura esatta dei due CSV Python (tutte le celle e totali): OK
+Originali invariati (MD5): OK
+Confronto R/Python: report esatto, CSV entro tolleranza: OK
+
+Riproducibilita tra due corse: MD5 identici: OK
+
+Righe deal: 216804
+Righe curve larghe/lunghe: 17520 70080
+Gruppi mensili: 117
+Righe con problemi: 0
+Righe ENERGY con P&L: 216798
+Righe non applicabili: 6
+
+MD5 input:
+DEAL.csv 3ca588f126354431e8442a800bc83e64
+CurveOrariePower.csv 692745b0a2ec373cd594e75f9350eb3d
+
+MD5 CSV esportati:
+deals_enriched_pnl.csv 61562f9a017f6ca2bee3a8551c097b0f
+monthly_summary.csv dacb39d4c5ffdaf1ab23b7fc189b8858
+
+MD5 codice Python:
+compare.py 66239d31dc1da5cc321dd9badb9bbdbc
+functions.py d9234c6ad36a376c6480ac2ecf34cc1f
+report.py e2e76e74dc47fa7c0a43505dae76a3a6
+run.py a25dec0cd719e52c66204c57cdfc9a98
+tests.py c82cece2e7942b1b4e2d7649a978e473
+
+Python: 3.9.13 (main, Aug 25 2022, 23:51:50) [MSC v.1916 64 bit (AMD64)]
+Piattaforma: Windows-10-10.0.26200-SP0
+Dipendenze: solo libreria standard

@@ -1,0 +1,31 @@
+{
+  "monthly_groups": 117,
+  "report_money": {
+    "Costi di acquisto di energia": "121.416.249,94",
+    "FRANCE": "28.908,00",
+    "GERMANYDE": "880.469,31",
+    "ITALY": "-1.450.018,00",
+    "Margine di contribuzione (dataset)": "-14.214.839,86",
+    "P&L ENERGY complessivo": "-540.640,69",
+    "Ricavi da servizi": "903.553,50",
+    "Ricavi da vendita di energia": "106.297.856,58",
+    "Totale ricavi": "107.201.410,08"
+  },
+  "statistics": {
+    "balance": -14214839.860004144,
+    "cost_energy": 121416249.9350045,
+    "known_margin": -14214839.860004142,
+    "n_calculable": 216798,
+    "n_energy": 216798,
+    "n_energy_incomplete": 0,
+    "n_not_applicable": 6,
+    "n_problem": 0,
+    "n_rows": 216804,
+    "n_service": 6,
+    "n_unclassified": 0,
+    "pnl": -540640.6938294129,
+    "revenue_energy": 106297856.57500036,
+    "revenue_service": 903553.5,
+    "volume_energy": 2318500.0
+  }
+}

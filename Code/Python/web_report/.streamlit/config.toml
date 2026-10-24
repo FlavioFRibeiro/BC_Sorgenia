@@ -1,0 +1,14 @@
+[theme]
+base = "light"
+primaryColor = "#13795B"
+backgroundColor = "#F7F9F8"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#142B2A"
+font = "sans serif"
+
+[browser]
+gatherUsageStats = false
+
+[server]
+headless = true
+maxMessageSize = 30

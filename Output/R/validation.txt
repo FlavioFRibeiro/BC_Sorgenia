@@ -1,0 +1,50 @@
+VALIDAZIONE COMPLETATA
+Test sintetici mirati: OK
+Chiavi curve univoche: OK
+Left join conservativo (righe, originali, IMPORTO, VOLUME): OK
+Identita formule P&L sulle righe calcolabili: OK
+Riconciliazione dettaglio/mensile: OK
+Rilettura integrale di entrambi i CSV: OK
+Originali invariati (MD5): OK
+
+Righe deal: 216804
+Righe curve larghe/lunghe: 17520 70080
+Gruppi mensili: 117
+Righe con problemi: 0
+Righe ENERGY con P&L: 216798
+Righe non applicabili: 6
+
+MD5 input:
+DEAL.csv 3ca588f126354431e8442a800bc83e64
+CurveOrariePower.csv 692745b0a2ec373cd594e75f9350eb3d
+
+MD5 CSV esportati:
+deals_enriched_pnl.csv ab9b4f0c05c39ac20f0707966b94bf19
+monthly_summary.csv 38a38e246bb33276fa3af694932bbf3f
+
+MD5 codice R:
+functions.R f6fa3ece91bda1114ece99939899f432
+report.R 7aa215925fabf85f5e482aab849aa428
+run.R 5f17162f049a36209aa6de33433dc459
+tests.R 3e6ff4cde385b7f4ca8c29c9d6ef5615
+
+Ambiente R:
+R version 4.3.1 (2023-06-16 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 11 x64 (build 26200)
+
+Matrix products: default
+
+
+locale:
+[1] C
+system code page: 65001
+
+time zone: Europe/Rome
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+[1] compiler_4.3.1 tools_4.3.1   
